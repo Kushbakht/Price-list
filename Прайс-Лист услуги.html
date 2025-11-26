@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="ru">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Презентация прайс-лист</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      box-sizing: border-box;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      overflow: auto;
+      position: relative;
+    }
+
+    .presentation-wrapper {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    .slide {
+      width: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      page-break-after: always;
+    }
+
+    /* Титульный слайд */
+    .title-slide {
+      text-align: center;
+    }
+
+    .title-slide h1 {
+      font-size: 72px;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 0 0 20px 0;
+      text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+      letter-spacing: 3px;
+    }
+
+    .title-slide .subtitle {
+      font-size: 28px;
+      color: rgba(255,255,255,0.95);
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+
+    .title-slide .emoji-decoration {
+      font-size: 80px;
+      margin-bottom: 30px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Контентные слайды */
+    .content-slide {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .slide-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .slide-header h2 {
+      font-size: 48px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 15px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .slide-header .icon {
+      font-size: 56px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .service-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .service-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2d3748;
+      margin: 0 0 10px 0;
+    }
+
+    .service-card p {
+      font-size: 15px;
+      color: #718096;
+      margin: 0 0 15px 0;
+      line-height: 1.6;
+    }
+
+    .service-card .price {
+      font-size: 24px;
+      font-weight: 800;
+      color: #667eea;
+      margin: 0;
+    }
+
+    /* VIP слайд */
+    .vip-slide {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    }
+
+    .vip-slide .slide-header h2 {
+      color: #2d3748;
+    }
+
+    .vip-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 30px;
+      padding: 50px;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .vip-card h3 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #2d3748;
+      margin: 0 0 20px 0;
+    }
+
+    .vip-card .vip-badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 8px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+
+    .vip-features {
+      list-style: none;
+      padding: 0;
+      margin: 30px 0;
+      text-align: left;
+    }
+
+    .vip-features li {
+      font-size: 18px;
+      color: #4a5568;
+      padding: 12px 0;
+      padding-left: 35px;
+      position: relative;
+    }
+
+    .vip-features li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #ffd700;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .vip-price {
+      font-size: 42px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 30px;
+    }
+
+    /* Контактный слайд */
+    .contact-slide {
+      text-align: center;
+    }
+
+    .contact-slide h2 {
+      font-size: 56px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 50px 0;
+    }
+
+    .whatsapp-button {
+      background: #25D366;
+      color: white;
+      font-size: 32px;
+      font-weight: 800;
+      padding: 30px 60px;
+      border-radius: 60px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 15px 40px rgba(37,211,102,0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 4px solid white;
+      margin-bottom: 30px;
+    }
+
+    .whatsapp-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 20px 50px rgba(37,211,102,0.6);
+    }
+
+    .whatsapp-icon {
+      font-size: 48px;
+    }
+
+    .contact-cta {
+      font-size: 24px;
+      color: white;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+
+    /* Навигация между страницами */
+    .page-navigation {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      z-index: 100;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 15px 25px;
+      border-radius: 50px;
+      border: 2px solid white;
+    }
+
+    .page-btn {
+      background: white;
+      color: #667eea;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .page-btn:hover {
+      transform: scale(1.1);
+      background: #667eea;
+      color: white;
+    }
+
+    .page-btn.active {
+      background: #667eea;
+      color: white;
+      transform: scale(1.15);
+    }
+
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background: rgba(255,255,255,0.3);
+      border: 3px solid white;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .scroll-top-btn:hover {
+      background: rgba(255,255,255,0.5);
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+      .title-slide h1 {
+        font-size: 42px;
+      }
+
+      .title-slide .subtitle {
+        font-size: 18px;
+      }
+
+      .slide-header h2 {
+        font-size: 32px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .service-card {
+        padding: 20px;
+      }
+
+      .vip-card {
+        padding: 30px 20px;
+      }
+
+      .vip-features li {
+        font-size: 16px;
+      }
+
+      .whatsapp-button {
+        font-size: 22px;
+        padding: 20px 40px;
+      }
+
+      .slide {
+        padding: 40px 20px;
+      }
+
+      .page-navigation {
+        gap: 8px;
+        padding: 10px 15px;
+      }
+
+      .page-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <main class="presentation-wrapper"><!-- Слайд 1: Титульный -->
+   <section class="slide title-slide" id="page1">
+    <div class="emoji-decoration">
+     📊
+    </div>
+    <h1 id="presentationTitle">ПРАЙС-ЛИСТ УСЛУГ</h1>
+    <p class="subtitle" id="presentationSubtitle">Excel • Документы • Автоматизация</p>
+   </section><!-- Слайд 2: Excel срочные задачи -->
+   <section class="slide content-slide" id="page2">
+    <div class="slide-header">
+     <h2><span class="icon">⚡</span> Excel: Срочные задачи</h2>
+    </div>
+    <div class="services-grid">
+     <div class="service-card">
+      <h3>Исправление формул</h3>
+      <p>Починка сложных формул, ВПР, ИНДЕКС+ПОИСКПОЗ</p>
+      <p class="price">300–800 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Форматирование таблиц</h3>
+      <p>Чистка, структурирование, удобный вид</p>
+      <p class="price">400–1000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Быстрые правки</h3>
+      <p>Мелкие доработки до 30 минут</p>
+      <p class="price">500–800 ₽</p>
+     </div>
+    </div>
+   </section><!-- Слайд 3: Анализ и сводные -->
+   <section class="slide content-slide" id="page3">
+    <div class="slide-header">
+     <h2><span class="icon">📊</span> Анализ и сводные</h2>
+    </div>
+    <div class="services-grid">
+     <div class="service-card">
+      <h3>Простая сводная таблица</h3>
+      <p>Агрегация данных, группировка</p>
+      <p class="price">600–1200 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Многоуровневая сводная</h3>
+      <p>Сложная структура, автообновление</p>
+      <p class="price">1500–3000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Анализ данных</h3>
+      <p>Продажи, склад, динамика, графики</p>
+      <p class="price">2000–5000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Поиск ошибок</h3>
+      <p>Сверка, расхождения, контроль</p>
+      <p class="price">1200–2500 ₽</p>
+     </div>
+    </div>
+   </section><!-- Слайд 4: Автоматизация -->
+   <section class="slide content-slide" id="page4">
+    <div class="slide-header">
+     <h2><span class="icon">⚙️</span> Автоматизация Excel</h2>
+    </div>
+    <div class="services-grid">
+     <div class="service-card">
+      <h3>Формулы под процесс</h3>
+      <p>Автоматические расчёты под вашу задачу</p>
+      <p class="price">1500–4000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Умные таблицы</h3>
+      <p>Динамические диапазоны, связи</p>
+      <p class="price">2500–5000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Макросы VBA</h3>
+      <p>Автоматизация повторяющихся действий</p>
+      <p class="price">3000–7000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Power Query</h3>
+      <p>Загрузка и обработка больших данных</p>
+      <p class="price">2500–6000 ₽</p>
+     </div>
+    </div>
+   </section><!-- Слайд 5: Документы и Финансы -->
+   <section class="slide content-slide" id="page5">
+    <div class="slide-header">
+     <h2><span class="icon">📄</span> Документы и финансы</h2>
+    </div>
+    <div class="services-grid">
+     <div class="service-card">
+      <h3>КС-2 / КС-3</h3>
+      <p>Проверка и заполнение с нуля</p>
+      <p class="price">1500–7000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Акты, М-29, заявки</h3>
+      <p>Комплект документов</p>
+      <p class="price">1000–3000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>ДДС (Cash Flow)</h3>
+      <p>Движение денег, план-факт анализ</p>
+      <p class="price">2000–4000 ₽</p>
+     </div>
+     <div class="service-card">
+      <h3>Управленческий отчёт</h3>
+      <p>Доходы, расходы, прибыль</p>
+      <p class="price">2500–5000 ₽</p>
+     </div>
+    </div>
+   </section><!-- Слайд 6: VIP пакет -->
+   <section class="slide vip-slide" id="page6">
+    <div class="slide-header">
+     <h2><span class="icon">⭐</span> Премиум предложение</h2>
+    </div>
+    <div class="vip-card">
+     <div class="vip-badge">
+      VIP ПАКЕТ
+     </div>
+     <h3>Персональное ведение</h3>
+     <p style="font-size: 18px; color: #718096; margin-bottom: 20px;">Комплексная поддержка для вашего бизнеса</p>
+     <ul class="vip-features">
+      <li>Ведение всех Excel таблиц компании</li>
+      <li>Еженедельные обновления и сводные отчёты</li>
+      <li>Быстрые доработки в течение дня</li>
+      <li>Проверка и контроль документов</li>
+      <li>Постоянная связь и приоритет</li>
+      <li>Консультации по оптимизации процессов</li>
+     </ul>
+     <div class="vip-price">
+      5000–12000 ₽/месяц
+     </div>
+     <p style="font-size: 14px; color: #718096; margin-top: 15px;">В зависимости от объёма и сложности задач</p>
+    </div>
+   </section><!-- Слайд 7: Контакты -->
+   <section class="slide contact-slide" id="page7">
+    <h2>Свяжитесь со мной</h2><a href="#" class="whatsapp-button" id="whatsappButton"> <span class="whatsapp-icon">📱</span> <span id="whatsappNumber">+996 226 00 35 45</span> </a>
+    <p class="contact-cta" id="contactCta">Свяжитесь со мной!</p>
+   </section><!-- Навигация по страницам -->
+   <div class="page-navigation"><button class="page-btn active" onclick="scrollToPage(1)">1</button> <button class="page-btn" onclick="scrollToPage(2)">2</button> <button class="page-btn" onclick="scrollToPage(3)">3</button> <button class="page-btn" onclick="scrollToPage(4)">4</button> <button class="page-btn" onclick="scrollToPage(5)">5</button> <button class="page-btn" onclick="scrollToPage(6)">6</button> <button class="page-btn" onclick="scrollToPage(7)">7</button>
+   </div><!-- Кнопка "Наверх" --> <button class="scroll-top-btn" onclick="scrollToPage(1)" aria-label="В начало">↑</button>
+  </main>
+  <script>
+    const defaultConfig = {
+      presentation_title: 'ПРАЙС-ЛИСТ УСЛУГ',
+      presentation_subtitle: 'Excel • Документы • Автоматизация',
+      whatsapp_number: '+996 706 71 66 10',
+      contact_cta: 'Свяжитесь со мной!',
+      background_gradient_start: '#667eea',
+      background_gradient_end: '#764ba2',
+      card_background: '#ffffff',
+      text_color: '#2d3748',
+      accent_color: '#667eea',
+      font_family: 'Montserrat',
+      font_size: 16
+    };
+
+    function scrollToPage(pageNum) {
+      const page = document.getElementById('page' + pageNum);
+      if (page) {
+        page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Обновляем активную кнопку
+        document.querySelectorAll('.page-btn').forEach((btn, index) => {
+          btn.classList.toggle('active', index === pageNum - 1);
+        });
+      }
+    }
+
+    // Определяем активную страницу при скролле
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const pages = document.querySelectorAll('.slide');
+        let currentPage = 1;
+        
+        pages.forEach((page, index) => {
+          const rect = page.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            currentPage = index + 1;
+          }
+        });
+        
+        document.querySelectorAll('.page-btn').forEach((btn, index) => {
+          btn.classList.toggle('active', index === currentPage - 1);
+        });
+      }, 100);
+    });
+
+    async function onConfigChange(config) {
+      const presentationTitle = config.presentation_title || defaultConfig.presentation_title;
+      const presentationSubtitle = config.presentation_subtitle || defaultConfig.presentation_subtitle;
+      const whatsappNumber = config.whatsapp_number || defaultConfig.whatsapp_number;
+      const contactCta = config.contact_cta || defaultConfig.contact_cta;
+      const bgGradientStart = config.background_gradient_start || defaultConfig.background_gradient_start;
+      const bgGradientEnd = config.background_gradient_end || defaultConfig.background_gradient_end;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      const fontFamily = config.font_family || defaultConfig.font_family;
+      const fontSize = config.font_size || defaultConfig.font_size;
+
+      document.getElementById('presentationTitle').textContent = presentationTitle;
+      document.getElementById('presentationSubtitle').textContent = presentationSubtitle;
+      document.getElementById('whatsappNumber').textContent = whatsappNumber;
+      document.getElementById('contactCta').textContent = contactCta;
+
+      const cleanNumber = whatsappNumber.replace(/[^0-9+]/g, '');
+      document.getElementById('whatsappButton').href = `https://wa.me/${cleanNumber}`;
+
+      const allSlides = document.querySelectorAll('.slide');
+      allSlides.forEach(slide => {
+        slide.style.background = `linear-gradient(135deg, ${bgGradientStart} 0%, ${bgGradientEnd} 100%)`;
+      });
+
+      document.body.style.background = `linear-gradient(135deg, ${bgGradientStart} 0%, ${bgGradientEnd} 100%)`;
+
+      const serviceCards = document.querySelectorAll('.service-card h3');
+      serviceCards.forEach(card => {
+        card.style.color = textColor;
+      });
+
+      const prices = document.querySelectorAll('.service-card .price');
+      prices.forEach(price => {
+        price.style.color = accentColor;
+      });
+
+      document.body.style.fontFamily = `${fontFamily}, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`;
+
+      document.querySelector('.title-slide h1').style.fontSize = `${fontSize * 4.5}px`;
+      document.querySelector('.title-slide .subtitle').style.fontSize = `${fontSize * 1.75}px`;
+      document.querySelectorAll('.slide-header h2').forEach(el => el.style.fontSize = `${fontSize * 3}px`);
+      document.querySelectorAll('.service-card h3').forEach(el => el.style.fontSize = `${fontSize * 1.375}px`);
+      document.querySelectorAll('.service-card p').forEach(el => el.style.fontSize = `${fontSize * 0.9375}px`);
+      document.querySelectorAll('.service-card .price').forEach(el => el.style.fontSize = `${fontSize * 1.5}px`);
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_gradient_start || defaultConfig.background_gradient_start,
+            set: (value) => {
+              config.background_gradient_start = value;
+              window.elementSdk.setConfig({ background_gradient_start: value });
+            }
+          },
+          {
+            get: () => config.card_background || defaultConfig.card_background,
+            set: (value) => {
+              config.card_background = value;
+              window.elementSdk.setConfig({ card_background: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => config.background_gradient_end || defaultConfig.background_gradient_end,
+            set: (value) => {
+              config.background_gradient_end = value;
+              window.elementSdk.setConfig({ background_gradient_end: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['presentation_title', config.presentation_title || defaultConfig.presentation_title],
+        ['presentation_subtitle', config.presentation_subtitle || defaultConfig.presentation_subtitle],
+        ['whatsapp_number', config.whatsapp_number || defaultConfig.whatsapp_number],
+        ['contact_cta', config.contact_cta || defaultConfig.contact_cta]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a40d64bd2d666a0',t:'MTc2NDA3MDQ2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
